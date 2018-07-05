@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Quandary Aid</string>
+    <string name="title_activity_welcome">Login/Signup</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Quandary</string>
+    <string name="slide_1_title2">Aid</string>
+    <string name="slide_1_desc"></string>
+
+    <string name="slide_2_title">Good Samaritans Act</string>
+    <string name="slide_2_desc"></string>
+
+    <string name="slide_3_title">Moto</string>
+    <string name="slide_3_desc"></string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Play Again</string>
+
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="login_hint">Login</string>
+</resources>
