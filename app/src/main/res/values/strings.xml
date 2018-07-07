@@ -21,4 +21,8 @@
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="login_hint">Login</string>
+
+    <string name="empty_fields">Some fields are empty</string>
+    <string name="json_error">Error in receiving json</string>
+    <string name="load">Loading</string>
 </resources>
