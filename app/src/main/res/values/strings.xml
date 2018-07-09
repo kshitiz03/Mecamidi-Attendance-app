@@ -1,9 +1,5 @@
 <resources>
-<<<<<<< HEAD
-    <string name="app_name">Quandary Aid</string>
-=======
     <string name="app_name">Attendance Time</string>
->>>>>>> lets see
     <string name="title_activity_welcome">Login/Signup</string>
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
@@ -25,11 +21,9 @@
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="login_hint">Login</string>
-<<<<<<< HEAD
 
     <string name="empty_fields">Some fields are empty</string>
     <string name="json_error">Error in receiving json</string>
     <string name="load">Loading</string>
-=======
->>>>>>> lets see
+
 </resources>

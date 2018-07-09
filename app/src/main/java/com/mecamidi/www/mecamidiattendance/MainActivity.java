@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 writer.close();
 
             } catch (IOException e) {
+                Log.e("tag","error here");
                 e.printStackTrace();
                 String json = String.format("{\"msg\":\"Error in connecting to server\",\"error\":\"%s\",\"login\":\"%b\"}",e.getMessage(),false);
                 try {
