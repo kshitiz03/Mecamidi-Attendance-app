@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
+=======
+    android:background="#80D7FF"
+>>>>>>> lets see
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
@@ -24,11 +28,27 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+<<<<<<< HEAD
         android:layout_height="match_parent"
+=======
+        android:gravity="center"
+        android:layout_height="wrap_content"
+>>>>>>> lets see
         android:orientation="vertical"
         android:padding="@dimen/activity_vertical_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+<<<<<<< HEAD
+=======
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/family_younger_brother" />
+
+>>>>>>> lets see
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -37,20 +57,41 @@
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:hint="@string/username_hint" />
+=======
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:hint="@string/username_hint"
+                android:textAlignment="center" />
+>>>>>>> lets see
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
+<<<<<<< HEAD
             android:layout_height="wrap_content">
+=======
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+>>>>>>> lets see
 
             <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:hint="@string/password_hint"
                 android:inputType="textPassword"/>
+=======
+                android:gravity="center"
+                android:singleLine="true"
+                android:hint="@string/password_hint"
+                android:inputType="textPassword"
+                android:textAlignment="center" />
+>>>>>>> lets see
 
         </android.support.design.widget.TextInputLayout>
 
@@ -59,13 +100,31 @@
             android:id="@+id/login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
+=======
+            android:layout_gravity="center_horizontal"
+>>>>>>> lets see
             android:layout_marginTop="10dp"
             android:text="@string/login_hint" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:id="@+id/error_field"/>
+=======
+            android:layout_gravity="center_horizontal"
+            android:text="or" />
+
+        <Button
+            android:id="@+id/signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="Signup" />
+
+>>>>>>> lets see
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
