@@ -1,18 +1,12 @@
 package com.mecamidi.www.mecamidiattendance;
 
 
-<<<<<<< HEAD
-import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.AsyncTask;
-=======
-import android.content.Intent;
->>>>>>> lets see
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-<<<<<<< HEAD
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,8 +21,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-=======
->>>>>>> lets see
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-<<<<<<< HEAD
+        //startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
 
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,10 +142,5 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-=======
-        //startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
-
-
->>>>>>> lets see
     }
 }
