@@ -4,11 +4,13 @@ package com.mecamidi.www.mecamidiattendance;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
                 String code = ((EditText)findViewById(R.id.username)).getText().toString();
                 String pass = ((EditText)findViewById(R.id.password)).getText().toString();
                 if(code.isEmpty() || pass.isEmpty()) {
-                    TextView error = findViewById(R.id.error_field);
-                    error.setText(getResources().getString(R.string.empty_fields));
+                    showToast(R.string.empty_fields);
+//                    TextView error = findViewById(R.id.error_field);
+//                    error.setText(getResources().getString(R.string.empty_fields));
                     return;
                 }
                 login(code,pass);
@@ -53,17 +56,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void showToast(int id) {
+
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_layout),id,Snackbar.LENGTH_SHORT);
+        snackbar.show();
+
+    }
+
+    private void showToast(CharSequence seq) {
+
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_layout),seq,Snackbar.LENGTH_SHORT);
+        snackbar.show();
+
+    }
+
     private class LoginAsyncTask extends AsyncTask<String,Void,JSONObject> {
 
         private String loginUrl = Data.URL_LOGIN;
         private URL url;
         private HttpURLConnection connection;
-        private TextView error;
 
         @Override
         protected void onPreExecute() {
-            error = findViewById(R.id.error_field);
-            error.setText(getResources().getString(R.string.load));
+            showToast(R.string.load);
         }
 
         @Override
@@ -133,10 +148,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(JSONObject result) {
 
-            error.setText(" ");
             try {
-                if(result.has("msg")) error.setText(result.getString("msg"));
-                else error.setText(getResources().getString(R.string.json_error));
+                if(result.has("msg"))
+                    showToast(result.getString("msg"));
+                else
+                    showToast(R.string.json_error);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

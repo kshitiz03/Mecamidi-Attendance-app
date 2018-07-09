@@ -9,6 +9,7 @@
     android:background="#80D7FF"
 >>>>>>> lets see
     android:fitsSystemWindows="true"
+    android:id="@+id/top_layout"
     tools:context=".MainActivity">
 
     <android.support.design.widget.AppBarLayout
