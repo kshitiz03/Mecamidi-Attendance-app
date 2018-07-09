@@ -109,13 +109,14 @@ public class MainActivity extends AppCompatActivity {
                 writer.close();
 
             } catch (IOException e) {
-                Log.e("tag","error here");
+                Log.e("tag","error here in IO");
                 e.printStackTrace();
                 String json = String.format("{\"msg\":\"Error in connecting to server\",\"error\":\"%s\",\"login\":\"%b\"}",e.getMessage(),false);
                 try {
                     return new JSONObject(json);
                 } catch (JSONException e1) {
                     e1.printStackTrace();
+                    Log.e("tag","error here in IO in json");
                 }
             }
 
@@ -137,10 +138,12 @@ public class MainActivity extends AppCompatActivity {
             }
             catch (Exception e ) {
                 e.printStackTrace();
+                Log.e("tag","error here in exception");
                 String json = String.format("{\"msg\":\"Error in connecting to server\",\"error\":\"%s\",\"login\":\"%b\"}",e.getMessage(),false);
                 try {
                     return new JSONObject(json);
                 } catch (JSONException e1) {
+                    Log.e("tag","error here in exception json");
                     e1.printStackTrace();
                 }
             }
