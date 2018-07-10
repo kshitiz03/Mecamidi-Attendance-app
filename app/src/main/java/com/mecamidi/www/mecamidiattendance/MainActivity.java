@@ -1,21 +1,15 @@
 package com.mecamidi.www.mecamidiattendance;
 
-
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +29,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences pref = getSharedPreferences(Functions.PREF,MODE_PRIVATE);
+        if(pref.contains(Functions.LOGINID)) {
+            Intent intent = new Intent(MainActivity.this,DashboardActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+            finish();
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
@@ -145,7 +148,9 @@ public class MainActivity extends AppCompatActivity {
                         result.append(line);
                     }
                     reader.close();
-                    return new JSONObject(result.toString());
+                    JSONObject json =  new JSONObject(result.toString());
+                    json.put("code",code);
+                    return json;
                 }
 
             }
@@ -170,11 +175,22 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(JSONObject result) {
 
             try {
-                if(result.has("msg"))
-                    Functions.showToast(MainActivity.this,result.getString("msg"));
-                else
 
-                    Functions.showToast(MainActivity.this,R.string.json_error);
+                if(result.getBoolean("login")) {
+                    if(result.has("data")) {
+                        JSONObject data = result.getJSONObject("data");
+                        Functions.addToPreferences(MainActivity.this,data);
+                        Intent intent = new Intent(MainActivity.this,DashboardActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                }
+                else {
+                    Functions.showToast(MainActivity.this, result.getString("msg"));
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

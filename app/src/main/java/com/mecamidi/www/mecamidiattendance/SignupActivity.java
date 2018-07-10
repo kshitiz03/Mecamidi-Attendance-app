@@ -1,5 +1,6 @@
 package com.mecamidi.www.mecamidiattendance;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -166,11 +167,19 @@ public class SignupActivity extends AppCompatActivity {
         protected void onPostExecute(JSONObject result) {
 
             try {
-                if(result.has("msg"))
-                    Functions.showToast(SignupActivity.this,result.getString("msg"));
-                else
 
-                    Functions.showToast(SignupActivity.this,R.string.json_error);
+                if(result.getBoolean("signup")) {
+                    if (result.has("data")) {
+                        JSONObject data = result.getJSONObject("data");
+                        Functions.addToPreferences(SignupActivity.this, data);
+                        Intent intent = new Intent(SignupActivity.this, DashboardActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
