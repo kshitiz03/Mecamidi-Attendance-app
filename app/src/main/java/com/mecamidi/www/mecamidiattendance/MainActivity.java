@@ -1,6 +1,9 @@
 package com.mecamidi.www.mecamidiattendance;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -59,15 +62,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void showToast(int id) {
 
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_layout),id,Snackbar.LENGTH_SHORT);
-        snackbar.show();
+//        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_layout),id,Snackbar.LENGTH_SHORT);
+//        snackbar.show();
+        Toast toast = Toast.makeText(this,id,Toast.LENGTH_SHORT);
+        toast.show();
 
     }
 
     private void showToast(CharSequence seq) {
 
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_layout),seq,Snackbar.LENGTH_SHORT);
-        snackbar.show();
+//        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_layout),seq,Snackbar.LENGTH_SHORT);
+//        snackbar.show();
+        Toast toast = Toast.makeText(this,seq,Toast.LENGTH_LONG);
+        toast.show();
 
     }
 
@@ -87,6 +94,18 @@ public class MainActivity extends AppCompatActivity {
 
             String code = loginData[0];
             String pass = loginData[1];
+
+            if(!isNetworkAvailable()) {
+                try {
+                    JSONObject j = new JSONObject();
+                     j.put("msg","No Internet Connection");
+                     j.put("login",false);
+                     return j;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("tag","here");
+                }
+            }
 
             try {
                 url = new URL(loginUrl);
@@ -111,9 +130,12 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Log.e("tag","error here in IO");
                 e.printStackTrace();
-                String json = String.format("{\"msg\":\"Error in connecting to server\",\"error\":\"%s\",\"login\":\"%b\"}",e.getMessage(),false);
                 try {
-                    return new JSONObject(json);
+                    JSONObject error = new JSONObject();
+                    error.put("msg","Error in Connecting to Server");
+                    error.put("error",e.getMessage());
+                    error.put("login",false);
+                    return error;
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                     Log.e("tag","error here in IO in json");
@@ -139,9 +161,12 @@ public class MainActivity extends AppCompatActivity {
             catch (Exception e ) {
                 e.printStackTrace();
                 Log.e("tag","error here in exception");
-                String json = String.format("{\"msg\":\"Error in connecting to server\",\"error\":\"%s\",\"login\":\"%b\"}",e.getMessage(),false);
                 try {
-                    return new JSONObject(json);
+                    JSONObject error = new JSONObject();
+                    error.put("msg","Error in Connecting to Server");
+                    error.put("error",e.getMessage());
+                    error.put("login",false);
+                    return error;
                 } catch (JSONException e1) {
                     Log.e("tag","error here in exception json");
                     e1.printStackTrace();
@@ -163,5 +188,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
