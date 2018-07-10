@@ -48,6 +48,7 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
+            android:theme="@style/EditTextHint"
             android:layout_height="wrap_content">
 
             <EditText
@@ -57,7 +58,6 @@
                 android:layout_centerInParent="true"
                 android:textColorHint="@color/colorPrimary"
                 android:textColor="@color/colorPrimary"
-
                 android:gravity="center"
                 android:singleLine="true"
                 android:hint="@string/username_hint"
@@ -68,6 +68,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:theme="@style/EditTextHint"
             android:layout_marginBottom="20dp">
 
             <EditText

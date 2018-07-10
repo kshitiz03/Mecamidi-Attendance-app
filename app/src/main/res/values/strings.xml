@@ -19,11 +19,18 @@
     <string name="play_again">Play Again</string>
 
     <string name="username_hint">Username</string>
+    <string name="username_id_hint">Email id/Employee id</string>
+
     <string name="password_hint">Password</string>
+    <string name="con_password_hint"> Confirm Password</string>
+
     <string name="login_hint">Login</string>
 
     <string name="empty_fields">Some fields are empty</string>
     <string name="json_error">Error in receiving json</string>
     <string name="load">Loading</string>
+
+    <string name="email">E-mail id</string>
+    <string name="empid">Employee id</string>
 
 </resources>

@@ -2,6 +2,7 @@ package com.mecamidi.www.mecamidiattendance;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -38,13 +39,20 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
 
+        findViewById(R.id.signup).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,SignupActivity.class));
+            }
+        });
+
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String code = ((EditText)findViewById(R.id.username)).getText().toString();
                 String pass = ((EditText)findViewById(R.id.password)).getText().toString();
                 if(code.isEmpty() || pass.isEmpty()) {
-                    showToast(R.string.empty_fields);
+                    Functions.showToast(MainActivity.this,R.string.empty_fields);
 //                    TextView error = findViewById(R.id.error_field);
 //                    error.setText(getResources().getString(R.string.empty_fields));
                     return;
@@ -60,23 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void showToast(int id) {
-
-//        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_layout),id,Snackbar.LENGTH_SHORT);
-//        snackbar.show();
-        Toast toast = Toast.makeText(this,id,Toast.LENGTH_SHORT);
-        toast.show();
-
-    }
-
-    private void showToast(CharSequence seq) {
-
-//        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_layout),seq,Snackbar.LENGTH_SHORT);
-//        snackbar.show();
-        Toast toast = Toast.makeText(this,seq,Toast.LENGTH_LONG);
-        toast.show();
-
-    }
 
     private class LoginAsyncTask extends AsyncTask<String,Void,JSONObject> {
 
@@ -86,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            showToast(R.string.load);
+            Functions.showToast(MainActivity.this,R.string.load);
         }
 
         @Override
@@ -95,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             String code = loginData[0];
             String pass = loginData[1];
 
-            if(!isNetworkAvailable()) {
+            if(!Functions.isNetworkAvailable(MainActivity.this)) {
                 try {
                     JSONObject j = new JSONObject();
                      j.put("msg","No Internet Connection");
@@ -180,9 +171,10 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 if(result.has("msg"))
-                    showToast(result.getString("msg"));
+                    Functions.showToast(MainActivity.this,result.getString("msg"));
                 else
-                    showToast(R.string.json_error);
+
+                    Functions.showToast(MainActivity.this,R.string.json_error);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -190,10 +182,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 }
