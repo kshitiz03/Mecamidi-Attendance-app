@@ -1,15 +1,15 @@
 package com.mecamidi.www.mecamidiattendance;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,104 +23,102 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
+
+    private boolean email = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        SharedPreferences pref = getSharedPreferences(Functions.PREF,MODE_PRIVATE);
-        if(pref.contains(Functions.LOGINID)) {
-            Intent intent = new Intent(MainActivity.this,DashboardActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent);
-            finish();
-        }
-
+        setContentView(R.layout.activity_signup);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
 
-        findViewById(R.id.signup).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.signup_email).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,SignupActivity.class));
+                email = true;
+                String emp = ((EditText)findViewById(R.id.user_id)).getText().toString();
+                String empppass = ((EditText)findViewById(R.id.password)).getText().toString();
+                String confpass = ((EditText)findViewById(R.id.con_password)).getText().toString();
+                signup(emp,empppass,confpass);
             }
         });
 
-        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.signup_code).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String code = ((EditText)findViewById(R.id.username)).getText().toString();
-                String pass = ((EditText)findViewById(R.id.password)).getText().toString();
-                if(code.isEmpty() || pass.isEmpty()) {
-                    Functions.showToast(MainActivity.this,R.string.empty_fields);
-//                    TextView error = findViewById(R.id.error_field);
-//                    error.setText(getResources().getString(R.string.empty_fields));
-                    return;
-                }
-                login(code,pass);
+                email = false;
+                String emp = ((EditText)findViewById(R.id.user_id)).getText().toString();
+                String empppass = ((EditText)findViewById(R.id.password)).getText().toString();
+                String confpass = ((EditText)findViewById(R.id.con_password)).getText().toString();
+                signup(emp,empppass,confpass);
             }
         });
     }
 
-    private void login(String code,String pass) {
+    private void signup(String emp,String empppass,String confpass) {
 
-        new LoginAsyncTask().execute(code,pass);
-
+        if(emp.isEmpty() || empppass.isEmpty() || confpass.isEmpty()) {
+            Functions.showToast(this,R.string.empty_fields);
+            return;
+        }
+        new SignupAsyncTask().execute(emp,empppass,confpass);
     }
 
+    private class SignupAsyncTask extends AsyncTask<String,Void,JSONObject> {
 
-    private class LoginAsyncTask extends AsyncTask<String,Void,JSONObject> {
-
-        private String loginUrl = Data.URL_LOGIN;
+        private String signupUrl = Data.URL_SIGNUP;
         private URL url;
         private HttpURLConnection connection;
 
         @Override
         protected void onPreExecute() {
-            Functions.showToast(MainActivity.this,R.string.load);
+            Functions.showToast(SignupActivity.this,getResources().getString(R.string.load));
         }
 
         @Override
-        protected JSONObject doInBackground(String... loginData) {
+        protected JSONObject doInBackground(String... signupData) {
 
-            String code = loginData[0];
-            String pass = loginData[1];
+            String emp = signupData[0];
+            String empppass = signupData[1];
+            String confpass = signupData[2];
 
-            if(!Functions.isNetworkAvailable(MainActivity.this)) {
+            if(!Functions.isNetworkAvailable(SignupActivity.this)) {
+
                 try {
                     JSONObject j = new JSONObject();
-                     j.put("msg","No Internet Connection");
-                     j.put("login",false);
-                     return j;
+                    j.put("msg","No Internet Connection");
+                    j.put("signup",false);
+                    return j;
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("tag","here");
                 }
+
             }
 
             try {
-                url = new URL(loginUrl);
+                url = new URL(signupUrl);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
 
             try {
-
                 connection = (HttpURLConnection) url.openConnection();
-                connection.setDoInput(true);
-                connection.setDoOutput(true);
                 connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+                connection.setDoInput(true);
 
-                Uri.Builder builder = new Uri.Builder().appendQueryParameter("empcode",code).appendQueryParameter("emppass",pass);
+                Uri.Builder builder = new Uri.Builder().appendQueryParameter("emppass",empppass).appendQueryParameter("confpass",confpass);
+                if(email) builder.appendQueryParameter("empemail",emp);
+                else builder.appendQueryParameter("empcode",emp);
                 String query = builder.build().getEncodedQuery();
+
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
                 writer.write(query);
                 writer.flush();
                 writer.close();
-
             } catch (IOException e) {
                 Log.e("tag","error here in IO");
                 e.printStackTrace();
@@ -128,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject error = new JSONObject();
                     error.put("msg","Error in Connecting to Server");
                     error.put("error",e.getMessage());
-                    error.put("login",false);
+                    error.put("signup",false);
                     return error;
                 } catch (JSONException e1) {
                     e1.printStackTrace();
@@ -137,31 +135,25 @@ public class MainActivity extends AppCompatActivity {
             }
 
             try {
-
-                int response_code = connection.getResponseCode();
-                if(response_code == HttpURLConnection.HTTP_OK) {
+                int reponseCode = connection.getResponseCode();
+                if(reponseCode == HttpURLConnection.HTTP_OK) {
 
                     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                     String line;
                     StringBuilder result = new StringBuilder();
-                    while((line = reader.readLine()) != null) {
+                    while((line = reader.readLine()) != null)
                         result.append(line);
-                    }
-                    reader.close();
-                    JSONObject json =  new JSONObject(result.toString());
-                    json.put("code",code);
-                    return json;
-                }
+                    return new JSONObject(result.toString());
 
-            }
-            catch (Exception e ) {
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("tag","error here in exception");
                 try {
                     JSONObject error = new JSONObject();
                     error.put("msg","Error in Connecting to Server");
                     error.put("error",e.getMessage());
-                    error.put("login",false);
+                    error.put("signup",false);
                     return error;
                 } catch (JSONException e1) {
                     Log.e("tag","error here in exception json");
@@ -176,19 +168,16 @@ public class MainActivity extends AppCompatActivity {
 
             try {
 
-                if(result.getBoolean("login")) {
-                    if(result.has("data")) {
+                if(result.getBoolean("signup")) {
+                    if (result.has("data")) {
                         JSONObject data = result.getJSONObject("data");
-                        Functions.addToPreferences(MainActivity.this,data);
-                        Intent intent = new Intent(MainActivity.this,DashboardActivity.class);
+                        Functions.addToPreferences(SignupActivity.this, data);
+                        Intent intent = new Intent(SignupActivity.this, DashboardActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(intent);
                         finish();
 
                     }
-                }
-                else {
-                    Functions.showToast(MainActivity.this, result.getString("msg"));
                 }
 
             } catch (JSONException e) {
@@ -197,5 +186,4 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
 }
