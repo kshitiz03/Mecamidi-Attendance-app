@@ -179,6 +179,10 @@ public class SignupActivity extends AppCompatActivity {
 
                     }
                 }
+                else {
+                    Functions.showToast(SignupActivity.this, result.getString("msg"));
+                }
+
 
             } catch (JSONException e) {
                 e.printStackTrace();

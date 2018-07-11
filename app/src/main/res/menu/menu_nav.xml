@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_dash"
+            android:icon="@android:drawable/sym_action_email"
+            android:title="@string/nav_dash"
+            android:checked="true"/>
+
+        <item
+            android:id="@+id/nav_punch"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/nav_punch"/>
+
+        <item
+            android:id="@+id/nav_myattd"
+            android:title="@string/nav_myattd"
+            android:icon="@android:drawable/ic_menu_send"/>
+
+        <item
+            android:icon="@android:drawable/ic_menu_delete"
+            android:title="@string/nav_markta"
+            android:id="@+id/nav_markta"/>
+        <item
+            android:icon="@android:drawable/ic_menu_delete"
+            android:title="@string/nav_teamattd"
+            android:id="@+id/nav_teamattd"/>
+        <item
+            android:icon="@android:drawable/ic_menu_delete"
+            android:title="@string/nav_levreq"
+            android:id="@+id/nav_levreq"/>
+
+    </group>
+
+    <item android:title="@string/nav_support">
+
+        <menu>
+
+            <item
+                android:id="@+id/nav_coninf"
+                android:title="@string/nav_coninf"
+                android:icon="@android:drawable/ic_menu_help"/>
+
+
+        </menu>
+
+    </item>
+
+</menu>
