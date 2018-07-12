@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyAttendanceFragment extends Fragment {
+public class AlterMemberFragment extends Fragment {
 
 
-    public MyAttendanceFragment() {
+    public AlterMemberFragment() {
         // Required empty public constructor
     }
 
@@ -22,9 +22,10 @@ public class MyAttendanceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getActivity().setTitle(R.string.nav_myattd);
+        getActivity().setTitle(R.string.nav_altm);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_attendance, container, false);
+        return inflater.inflate(R.layout.fragment_alter_member, container, false);
     }
 
 }

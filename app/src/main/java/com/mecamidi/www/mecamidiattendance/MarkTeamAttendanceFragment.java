@@ -22,6 +22,8 @@ public class MarkTeamAttendanceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getActivity().setTitle(R.string.nav_markta);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_mark_team_attendance, container, false);
     }
