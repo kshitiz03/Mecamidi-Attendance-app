@@ -35,5 +35,19 @@
 
     <string name="photo">Upload Photo</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="nav_dash">Dashboard</string>
+    <string name="nav_punch">Punch In/Out</string>
+    <string name="nav_myattd">My Attendance</string>
+    <string name="nav_markta">Mark Team Attendance</string>
+    <string name="nav_teamattd">Team Attendance</string>
+    <string name="nav_levreq">Leave Request</string>
+    <string name="nav_support">Support</string>
+    <string name="nav_coninf">Contact Information</string>
+    <string name="nav_open">Open Navigation Drawer</string>
+    <string name="nav_close">Close Navigation Drawer</string>
 
 </resources>
