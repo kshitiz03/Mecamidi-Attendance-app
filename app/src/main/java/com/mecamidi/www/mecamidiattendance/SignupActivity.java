@@ -136,6 +136,7 @@ public class SignupActivity extends AppCompatActivity {
 
             try {
                 int reponseCode = connection.getResponseCode();
+                Log.e("tag",String.valueOf(reponseCode));
                 if(reponseCode == HttpURLConnection.HTTP_OK) {
 
                     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -143,6 +144,8 @@ public class SignupActivity extends AppCompatActivity {
                     StringBuilder result = new StringBuilder();
                     while((line = reader.readLine()) != null)
                         result.append(line);
+                    String r = result.toString();
+                    Log.v("tag",r);
                     return new JSONObject(result.toString());
 
                 }
@@ -167,7 +170,7 @@ public class SignupActivity extends AppCompatActivity {
         protected void onPostExecute(JSONObject result) {
 
             try {
-
+                Log.v("tag",result.toString());
                 if(result.getBoolean("signup")) {
                     if (result.has("data")) {
                         JSONObject data = result.getJSONObject("data");
@@ -176,8 +179,10 @@ public class SignupActivity extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(intent);
                         finish();
-
                     }
+                }
+                else {
+                    Functions.showToast(SignupActivity.this, result.getString("msg"));
                 }
 
             } catch (JSONException e) {

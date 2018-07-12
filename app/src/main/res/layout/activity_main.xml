@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="#DCDCDC"
     android:fitsSystemWindows="true"
+    android:screenOrientation="portrait"
     tools:context=".MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -58,6 +59,7 @@
                 android:layout_centerInParent="true"
                 android:textColorHint="@color/colorPrimary"
                 android:textColor="@color/colorPrimary"
+
                 android:gravity="center"
                 android:singleLine="true"
                 android:hint="@string/username_hint"
@@ -67,8 +69,8 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:theme="@style/EditTextHint"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="20dp">
 
             <EditText
@@ -101,7 +103,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorPrimary"
+            android:textColor="@color/colorPrimary"
             android:layout_gravity="center_horizontal"
             android:text="or" />
 

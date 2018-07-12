@@ -33,4 +33,7 @@
     <string name="email">E-mail id</string>
     <string name="empid">Employee id</string>
 
+    <string name="photo">Upload Photo</string>
+
+
 </resources>
