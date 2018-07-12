@@ -20,6 +20,7 @@ public class Functions {
     public static final String ADMIN = "adminKey";
     public static final String DOB = "dobKey";
     public static final String DESIGNATION = "designationKey";
+    public static final String IMAGE = "imageKey";
 
     public static void showToast(Context context,int id) {
 

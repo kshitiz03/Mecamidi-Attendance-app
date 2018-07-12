@@ -173,7 +173,6 @@ public class SignupActivity extends AppCompatActivity {
                         JSONObject data = result.getJSONObject("data");
                         Functions.addToPreferences(SignupActivity.this, data);
                         Intent intent = new Intent(SignupActivity.this, DashboardActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(intent);
                         finish();
 

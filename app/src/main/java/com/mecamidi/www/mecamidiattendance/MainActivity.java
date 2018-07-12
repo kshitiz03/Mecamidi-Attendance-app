@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences(Functions.PREF,MODE_PRIVATE);
         if(pref.contains(Functions.LOGINID)) {
             Intent intent = new Intent(MainActivity.this,DashboardActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
             finish();
         }
@@ -181,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject data = result.getJSONObject("data");
                         Functions.addToPreferences(MainActivity.this,data);
                         Intent intent = new Intent(MainActivity.this,DashboardActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(intent);
                         finish();
 

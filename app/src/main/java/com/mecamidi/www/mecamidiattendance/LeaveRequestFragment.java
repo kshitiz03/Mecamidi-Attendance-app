@@ -3,6 +3,7 @@ package com.mecamidi.www.mecamidiattendance;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class LeaveRequestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle(R.string.nav_levreq);
         return inflater.inflate(R.layout.fragment_leave_request, container, false);
     }
 
