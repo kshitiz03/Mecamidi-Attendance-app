@@ -95,8 +95,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/bg_screen1"
-            android:background="@color/colorPrimary"
-            android:layout_marginTop="10dp"
+            android:background="@drawable/ripple"
+             android:layout_marginTop="10dp"
             android:elevation="10dp"
             android:text="@string/login_hint" />
 
@@ -111,7 +111,7 @@
             android:id="@+id/signup"
             android:elevation="10dp"
             android:textColor="@color/bg_screen1"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/ripple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

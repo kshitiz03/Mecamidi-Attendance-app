@@ -1,14 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MyAttendanceFragment">
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:textColor="@color/bg_screen2"
 
-</FrameLayout>
+        android:text="Start Date:" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Spinner" />
+
+    <!--<CalendarView-->
+
+        <!--android:id="@+id/calendarView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="400dp"-->
+        <!--android:clickable="true"-->
+        <!--android:showWeekNumber="false" />-->
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="@color/bg_screen2"
+
+        android:textSize="20dp"
+        android:text="" />
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="@color/bg_screen2"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:text="End Date:" />
+
+
+        <Button
+            android:id="@+id/show_my"
+            android:elevation="10dp"
+            android:padding="5dp"
+            android:layout_margin="20dp"
+            android:textColor="@color/bg_screen1"
+            android:background="@drawable/ripple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/show" />
+
+</LinearLayout>

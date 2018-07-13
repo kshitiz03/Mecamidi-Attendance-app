@@ -20,8 +20,7 @@ public class Functions {
     public static final String ADMIN = "adminKey";
     public static final String DOB = "dobKey";
     public static final String DESIGNATION = "designationKey";
-    public static final String IMAGE = "imageKey";
-
+    public static final String IMAGE="imagekey";
     public static void showToast(Context context,int id) {
 
 //        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_layout),id,Snackbar.LENGTH_SHORT);

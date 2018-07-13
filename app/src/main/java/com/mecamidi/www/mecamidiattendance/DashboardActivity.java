@@ -3,6 +3,7 @@ package com.mecamidi.www.mecamidiattendance;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,8 +12,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 public class DashboardActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
@@ -29,6 +34,14 @@ public class DashboardActivity extends AppCompatActivity  implements NavigationV
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        Menu menu = navigationView.getMenu();
+
+        MenuItem tools= menu.findItem(R.id.nav_support);
+        SpannableString s = new SpannableString(tools.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
+        tools.setTitle(s);
         navigationView.setNavigationItemSelectedListener(this);
 
         Fragment fragment = new DashboardFragment();
@@ -63,6 +76,10 @@ public class DashboardActivity extends AppCompatActivity  implements NavigationV
 
             case R.id.nav_levreq:
                 fragment = new LeaveRequestFragment();
+                break;
+
+            case R.id.nav_altermem:
+                fragment = new AlterMemberFragment();
                 break;
 
             case R.id.nav_coninf:
