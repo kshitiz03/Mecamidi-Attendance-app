@@ -1,9 +1,11 @@
 package com.mecamidi.www.mecamidiattendance;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,11 +32,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},Data.REQUEST_CODE);
+
         SharedPreferences pref = getSharedPreferences(Functions.PREF,MODE_PRIVATE);
         if(pref.contains(Functions.LOGINID)) {
             Intent intent = new Intent(MainActivity.this,DashboardActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            Log.e("tag",pref.getString(Functions.LOGINID,""));
             startActivity(intent);
+
             finish();
         }
 
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,SignupActivity.class));
+                finish();
             }
         });
 
@@ -92,9 +99,9 @@ public class MainActivity extends AppCompatActivity {
             if(!Functions.isNetworkAvailable(MainActivity.this)) {
                 try {
                     JSONObject j = new JSONObject();
-                     j.put("msg","No Internet Connection");
-                     j.put("login",false);
-                     return j;
+                    j.put("msg","No Internet Connection");
+                    j.put("login",false);
+                    return j;
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("tag","here");
@@ -106,69 +113,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
-
-            try {
-
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setDoInput(true);
-                connection.setDoOutput(true);
-                connection.setRequestMethod("POST");
-
-                Uri.Builder builder = new Uri.Builder().appendQueryParameter("empcode",code).appendQueryParameter("emppass",pass);
-                String query = builder.build().getEncodedQuery();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-                writer.write(query);
-                writer.flush();
-                writer.close();
-
-            } catch (IOException e) {
-                Log.e("tag","error here in IO");
-                e.printStackTrace();
-                try {
-                    JSONObject error = new JSONObject();
-                    error.put("msg","Error in Connecting to Server");
-                    error.put("error",e.getMessage());
-                    error.put("login",false);
-                    return error;
-                } catch (JSONException e1) {
-                    e1.printStackTrace();
-                    Log.e("tag","error here in IO in json");
-                }
-            }
-
-            try {
-
-                int response_code = connection.getResponseCode();
-                if(response_code == HttpURLConnection.HTTP_OK) {
-
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    String line;
-                    StringBuilder result = new StringBuilder();
-                    while((line = reader.readLine()) != null) {
-                        result.append(line);
-                    }
-                    reader.close();
-                    JSONObject json =  new JSONObject(result.toString());
-                    json.put("code",code);
-                    return json;
-                }
-
-            }
-            catch (Exception e ) {
-                e.printStackTrace();
-                Log.e("tag","error here in exception");
-                try {
-                    JSONObject error = new JSONObject();
-                    error.put("msg","Error in Connecting to Server");
-                    error.put("error",e.getMessage());
-                    error.put("login",false);
-                    return error;
-                } catch (JSONException e1) {
-                    Log.e("tag","error here in exception json");
-                    e1.printStackTrace();
-                }
-            }
-            return null;
+            return Functions.connectHttp(url,new String[]{"empcode","emppass"},new String[]{code,pass});
         }
 
         @Override
@@ -181,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject data = result.getJSONObject("data");
                         Functions.addToPreferences(MainActivity.this,data);
                         Intent intent = new Intent(MainActivity.this,DashboardActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(intent);
                         finish();
 

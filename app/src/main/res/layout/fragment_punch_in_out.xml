@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".PunchInOutFragment">
 
@@ -9,7 +11,77 @@
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:textColor="@color/bg_screen2"
 
-</FrameLayout>
+        android:text="Time of punching:" />
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="@color/bg_screen2"
+
+        android:textSize="20dp"
+        android:text="" />
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="@color/bg_screen2"
+        android:textSize="20dp"
+        android:textStyle="bold"
+
+        android:text="Date of punching:" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:textSize="20dp"
+        android:textColor="@color/bg_screen2"
+
+        android:layout_height="wrap_content"
+        android:text="" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/punchin"
+        android:elevation="10dp"
+        android:padding="5dp"
+        android:layout_weight=".5"
+
+        android:layout_margin="15dp"
+        android:textColor="@color/bg_screen1"
+        android:background="@drawable/ripple"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="@string/punin" />
+
+    <Button
+        android:id="@+id/punchout"
+        android:elevation="10dp"
+        android:padding="5dp"
+        android:layout_weight=".5"
+
+        android:layout_margin="15dp"
+        android:textColor="@color/bg_screen1"
+        android:background="@drawable/ripple"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="@string/punout" />
+    </LinearLayout>
+
+</LinearLayout>

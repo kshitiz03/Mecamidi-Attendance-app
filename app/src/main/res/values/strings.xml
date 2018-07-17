@@ -51,5 +51,11 @@
     <string name="nav_open">Open Navigation Drawer</string>
     <string name="nav_close">Close Navigation Drawer</string>
     <string name="toolbar_p">Punch In/Out</string>
+    <string name="punin">Punch In</string>
+    <string name="punout">Punch Out</string>
+    <string name="show">Show Attendance</string>
+    <string name="emp_name">Enter Employee Name</string>
+    <string name="nav_proja">Project Assignment</string>
+
 
 </resources>
