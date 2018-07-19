@@ -1,14 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AlterMemberFragment">
+    android:fadeScrollbars="true">
+<LinearLayout
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:layout_weight=".5">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:textColor="@color/bg_screen2"
+        android:text="Add Employee " />
 
-</FrameLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/EditTextHint"
+        android:layout_marginBottom="20dp">
+
+        <EditText
+            android:id="@+id/add_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColorHint="@color/bg_screen2"
+            android:hint="@string/emp_name"
+            android:textColor="@color/bg_screen2"
+            android:layout_marginBottom="20dp"
+            android:inputType="text"
+            android:textAlignment="center" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/add_mem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="15dp"
+        android:layout_marginBottom="45dp"
+        android:background="@drawable/ripple_enable"
+        android:elevation="10dp"
+        android:padding="5dp"
+        android:text="Add Employee"
+        android:textColor="@color/bg_screen1" />
+
+    </LinearLayout>
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight=".5">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:textColor="@color/bg_screen2"
+
+        android:text="Remove Employee" />
+        <!--<EditText-->
+            <!--android:id="@+id/rem_name"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:singleLine="true"-->
+            <!--android:textColorHint="@color/bg_screen2"-->
+            <!--android:hint="@string/emp_name"-->
+            <!--android:textColor="@color/bg_screen2"-->
+            <!--android:layout_marginBottom="20dp"-->
+            <!--android:inputType="textAutoComplete"-->
+            <!--android:textAlignment="center" />-->
+
+        <AutoCompleteTextView
+            android:id="@+id/members"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/emp_name"
+            android:textColor="@color/bg_screen2"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:theme="@style/EditTextHint"
+            android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/rem_emp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="15dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/ripple_enable"
+        android:elevation="10dp"
+        android:padding="5dp"
+        android:text="Remove Employee"
+        android:textColor="@color/bg_screen1" />
+    </LinearLayout>
+
+</LinearLayout>
+</ScrollView>

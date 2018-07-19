@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 
 /**
@@ -25,7 +27,16 @@ public class MarkTeamAttendanceFragment extends Fragment {
 
         getActivity().setTitle(R.string.nav_markta);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mark_team_attendance, container, false);
-    }
+        View some = inflater.inflate(R.layout.fragment_mark_team_attendance, container, false);
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(some.getContext(), android.R.layout.simple_list_item_1, memberall);
+        AutoCompleteTextView tv = (AutoCompleteTextView) some.findViewById(R.id.teammark);
 
+        tv.setAdapter(adapter);
+
+        return some;
+    }
+    private static final String[] memberall = new String[] {
+            "Kshitiz", "Ashwin", "Aviral", "Parampreet", "Anu", "Ashwin1", "Ashwin2"
+    };
 }

@@ -85,6 +85,9 @@ public class DashboardActivity extends AppCompatActivity  implements NavigationV
             case R.id.nav_coninf:
                 intent = new Intent(this,CompanyInfoActivity.class);
                 break;
+            case R.id.nav_proj:
+                fragment = new ProjectAssignFragment();
+                break;
 
             default:
                 fragment = new DashboardFragment();
@@ -103,6 +106,12 @@ public class DashboardActivity extends AppCompatActivity  implements NavigationV
         layout.closeDrawer(Gravity.START);
         return true;
     }
+
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        finish();
+//    }
 
     @Override
     public void onBackPressed() {

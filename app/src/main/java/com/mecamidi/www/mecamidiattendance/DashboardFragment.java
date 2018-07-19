@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -79,20 +80,24 @@ public class DashboardFragment extends Fragment{
                 }
             }
         });
+       dashb.findViewById(R.id.logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor log = getActivity().getSharedPreferences(Functions.PREF, MODE_PRIVATE).edit();
+                log.clear();
+                log.apply();
+                DatabaseHandler handler = new DatabaseHandler(getContext());
+                handler.clearAll();
+                Intent lognew = new Intent(getActivity(), MainActivity.class);
+                startActivity(lognew);
+                getActivity().finish();
+            }
+        });
 
         // Inflate the layout for this fragment
         return dashb;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_IMAGE:
-                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    selectImage();
-                }
-        }
-    }
 
     private void selectImage() {
         Intent intent = new Intent();

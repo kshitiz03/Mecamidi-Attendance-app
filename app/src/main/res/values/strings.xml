@@ -55,6 +55,7 @@
     <string name="punout">Punch Out</string>
     <string name="show">Show Attendance</string>
     <string name="emp_name">Enter Employee Name</string>
+    <string name="nav_proja">Project Assignment</string>
 
 
 </resources>

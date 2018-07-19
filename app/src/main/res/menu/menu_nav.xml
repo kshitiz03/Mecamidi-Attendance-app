@@ -43,7 +43,11 @@
             android:title="@string/nav_altm"
             android:textColor="#DCDCDC"
             android:id="@+id/nav_altermem"/>
-
+        <item
+            android:icon="@drawable/proj"
+            android:title="@string/nav_proja"
+            android:textColor="#DCDCDC"
+            android:id="@+id/nav_proj"/>
     </group>
 
     <item
