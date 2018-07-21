@@ -2,6 +2,7 @@ package com.mecamidi.www.mecamidiattendance;
 
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -101,6 +102,13 @@ public class TeamAttendanceFragment extends Fragment {
                         myCalendar.get(Calendar.DAY_OF_MONTH));
                 dt.getDatePicker().setMaxDate(System.currentTimeMillis());
                 dt.show();
+            }
+        });
+        some.findViewById(R.id.show_team).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),AttendanceActivity.class));
+                //finish();
             }
         });
 

@@ -2,18 +2,33 @@ package com.mecamidi.www.mecamidiattendance;
 
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -22,6 +37,7 @@ import java.util.Calendar;
  */
 public class LeaveRequestFragment extends Fragment {
 
+    private int leave_type = 0;
 
     public LeaveRequestFragment() {
         // Required empty public constructor
@@ -33,19 +49,36 @@ public class LeaveRequestFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         getActivity().setTitle(R.string.nav_levreq);
-        View some = inflater.inflate(R.layout.fragment_leave_request, container, false);
+        final View some = inflater.inflate(R.layout.fragment_leave_request, container, false);
 
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(some.getContext(), android.R.layout.simple_list_item_1, memberall);
-        AutoCompleteTextView tv = (AutoCompleteTextView) some.findViewById(R.id.leave);
+                new ArrayAdapter<>(some.getContext(), R.layout.spinner_textview, memberall);
+        Spinner tv = some.findViewById(R.id.leave);
 
         tv.setAdapter(adapter);
-        // Inflate the layout for this fragment
+        tv.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                leave_type = (int)l;
+//                Functions.showToast(getContext(),String.valueOf(l));
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        some.findViewById(R.id.Leave_stat).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(),LeaveView.class));
+            }
+        });
 
         final Calendar myCalendar = Calendar.getInstance();
-        final EditText edittext= (EditText) some.findViewById(R.id.Birthday);
-        final EditText edittext1= (EditText) some.findViewById(R.id.Birthday1);
+        final EditText edittext= some.findViewById(R.id.start);
+        final EditText edittext1= some.findViewById(R.id.end);
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -104,6 +137,20 @@ public class LeaveRequestFragment extends Fragment {
             }
         });
 
+        some.findViewById(R.id.show_my).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String start = edittext.getText().toString();
+                String end = edittext1.getText().toString();
+                if(end.equals("") || start.equals("")) {
+                    Functions.showToast(getContext(),"Some fields are empty");
+                    return;
+                }
+                new RequestLeaveTask().execute(start,end);
+            }
+        });
+
 
         return some;
     }
@@ -111,5 +158,56 @@ public class LeaveRequestFragment extends Fragment {
     private static final String[] memberall = new String[] {
             "CL(Casual Leave)", "SL(Sick Leave)", "EL(Earned Leave)", "CTO(Compensatory Off)", "SRT(Short Leave)", "WO(Week Off)", "HO(Holiday)", "OD(Office Duty)"
     };
+
+    private class RequestLeaveTask extends AsyncTask<String,Void,JSONObject> {
+
+        @Override
+        protected void onPreExecute() {
+            Functions.showToast(getContext(),"Loading");
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... data) {
+
+            if(!Functions.isNetworkAvailable(getContext())) {
+                try {
+                    JSONObject j = new JSONObject();
+                    j.put("msg","No Internet Connection");
+                    j.put("login",false);
+                    return j;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("tag","here");
+                }
+            }
+
+            String start = data[0];
+            String end = data[1];
+            ArrayList<String> keys = new ArrayList<>();
+            ArrayList<String> values = new ArrayList<>();
+            keys.add("start"); values.add(start);
+            keys.add("end"); values.add(end);
+            keys.add("leave_type"); values.add(String.valueOf(leave_type+1));
+            String id = String.valueOf(getContext().getSharedPreferences(Functions.PREF, Context.MODE_PRIVATE).getInt(Functions.ID,-1));
+            keys.add("id"); values.add(id);
+            URL url = null;
+            try {
+                url = new URL(Data.URL_LEAVE);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            return Functions.connectHttp(url,keys,values);
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            Log.e("tag",result.toString());
+            try {
+                Functions.showToast(getContext(),result.getString("msg"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

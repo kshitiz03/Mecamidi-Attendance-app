@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/par"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:background="@color/bg_screen2"
+        android:layout_alignParentTop="true"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/bg_screen1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textStyle="bold"
+            android:textAlignment="center"
+
+            android:text="Start Date" />
+
+        <TextView
+            android:id="@+id/end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_vertical"
+            android:layout_centerInParent="true"
+            android:textAlignment="center"
+
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/bg_screen1"
+            android:text="End Date" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textAlignment="center"
+
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/bg_screen1"
+            android:layout_marginRight="40dp"
+            android:layout_alignParentTop="true"
+            android:text="Status"/>
+    </RelativeLayout>
+<ListView
+    android:id="@+id/list"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:drawSelectorOnTop="true"
+    android:divider="@color/bg_screen2"
+    android:dividerHeight="4px"/>
+</LinearLayout>

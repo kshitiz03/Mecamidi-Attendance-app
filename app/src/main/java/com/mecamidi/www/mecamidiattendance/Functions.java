@@ -1,11 +1,14 @@
 package com.mecamidi.www.mecamidiattendance;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -83,7 +86,7 @@ public class Functions {
 
     }
     public static void updateLabel(EditText edit, Calendar myCalendar) {
-        String myFormat = "dd/MM/yy"; //In which you need put here
+        String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         edit.setText(sdf.format(myCalendar.getTime()));
@@ -184,6 +187,32 @@ public class Functions {
 //            Log.v("keys",values[i]);
         }
         return connectHttp(url,keys, values);
+    }
+
+    public static boolean checkLocation(Context context,String currentLocation) {
+        SharedPreferences pref = context.getSharedPreferences(PREF,Context.MODE_PRIVATE);
+        String loc[] = pref.getString(LOCATION,"default").split("&");
+        String loc2[] = currentLocation.split("&");
+        double lat1 = Double.parseDouble(loc[0]);
+        double long1 = Double.parseDouble(loc[1]);
+        double lat2 = Double.parseDouble(loc2[0]);
+        double long2 = Double.parseDouble(loc2[1]);
+        float res[] = new float[1];
+        Location.distanceBetween(lat1,long1,lat2,long2,res);
+        return (res[0] < 1500);
+    }
+
+    public static void change(Context context,Button btn, boolean enable) {
+        if(enable) {
+            btn.setEnabled(true);
+            btn.setBackground(context.getResources().getDrawable(R.drawable.ripple_enable));
+            btn.setTextColor(context.getResources().getColor(R.color.bg_screen1));
+        }
+        else {
+            btn.setEnabled(false);
+            btn.setBackground(context.getResources().getDrawable(R.drawable.ripple_disable));
+            btn.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+        }
     }
 
 }

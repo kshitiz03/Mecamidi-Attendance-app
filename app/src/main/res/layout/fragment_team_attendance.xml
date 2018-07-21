@@ -96,7 +96,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/show_my"
+        android:id="@+id/show_team"
         android:elevation="10dp"
         android:padding="5dp"
         android:layout_margin="20dp"

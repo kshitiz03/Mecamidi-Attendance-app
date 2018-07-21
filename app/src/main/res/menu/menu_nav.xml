@@ -48,6 +48,12 @@
             android:title="@string/nav_proja"
             android:textColor="#DCDCDC"
             android:id="@+id/nav_proj"/>
+
+        <item
+            android:icon="@drawable/la"
+            android:title="@string/nav_la"
+            android:textColor="#DCDCDC"
+            android:id="@+id/nav_levap"/>
     </group>
 
     <item
@@ -63,6 +69,11 @@
                 android:textColor="#DCDCDC"
                 android:icon="@drawable/contact"/>
 
+            <item
+                android:id="@+id/nav_user"
+                android:title="@string/nav_userman"
+                android:textColor="#DCDCDC"
+                android:icon="@drawable/um"/>
 
         </menu>
 

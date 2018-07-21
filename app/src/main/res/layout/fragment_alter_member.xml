@@ -46,6 +46,27 @@
 
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/EditTextHint"
+        android:layout_marginBottom="20dp">
+
+        <EditText
+            android:id="@+id/add_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColorHint="@color/bg_screen2"
+            android:hint="@string/emp_id"
+            android:textColor="@color/bg_screen2"
+            android:layout_marginBottom="20dp"
+            android:inputType="number"
+            android:textAlignment="center" />
+
+    </android.support.design.widget.TextInputLayout>
+
     <Button
         android:id="@+id/add_mem"
         android:layout_width="wrap_content"
