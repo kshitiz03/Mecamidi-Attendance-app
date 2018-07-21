@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadeScrollbars="true">
+<LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
@@ -15,26 +19,16 @@
             android:textColor="@color/bg_screen2"
             android:text="Enter Employee id " />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/EditTextHint"
-            android:layout_marginBottom="20dp">
-
-            <EditText
-                android:id="@+id/emp_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textColorHint="@color/bg_screen2"
-                android:hint="Employee Name"
-                android:textColor="@color/bg_screen2"
-                android:layout_marginBottom="20dp"
-                android:inputType="text"
-                android:textAlignment="center" />
-
-        </android.support.design.widget.TextInputLayout>
+    <AutoCompleteTextView
+        android:id="@+id/assign1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/emp_name"
+        android:textColor="@color/bg_screen2"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:theme="@style/EditTextHint"
+        android:layout_marginBottom="20dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -45,26 +39,16 @@
         android:textColor="@color/bg_screen2"
         android:text="Enter Project Name " />
 
-    <android.support.design.widget.TextInputLayout
+    <AutoCompleteTextView
+        android:id="@+id/assign_proj"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/emp_name"
+        android:textColor="@color/bg_screen2"
+        android:textAlignment="center"
+        android:gravity="center"
         android:theme="@style/EditTextHint"
-        android:layout_marginBottom="20dp">
-
-        <EditText
-            android:id="@+id/proj_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textColorHint="@color/bg_screen2"
-            android:hint="Project Name"
-            android:textColor="@color/bg_screen2"
-            android:layout_marginBottom="20dp"
-            android:inputType="text"
-            android:textAlignment="center" />
-
-    </android.support.design.widget.TextInputLayout>
+        android:layout_marginBottom="20dp"/>
 
     <Button
             android:id="@+id/add_mem"
@@ -73,10 +57,11 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="15dp"
             android:layout_marginBottom="45dp"
-            android:background="@drawable/ripple"
+            android:background="@drawable/ripple_enable"
             android:elevation="10dp"
             android:padding="5dp"
             android:text="Assign Employee"
             android:textColor="@color/bg_screen1" />
 
     </LinearLayout>
+</ScrollView>

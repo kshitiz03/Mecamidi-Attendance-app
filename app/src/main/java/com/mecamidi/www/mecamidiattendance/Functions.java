@@ -1,11 +1,14 @@
 package com.mecamidi.www.mecamidiattendance;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -37,6 +40,7 @@ public class Functions {
     public static final String DESIGNATION = "designationKey";
     public static final String IMAGE="imagekey";
     public static final String ID = "idKey";
+    public static final String LOCATION = "locationKey";
     public static final String PUNCH = "punchKey";
     public static void showToast(Context context,int id) {
 
@@ -77,11 +81,12 @@ public class Functions {
         editor.putString(DOB,json.getString("dob"));
         editor.putString(DESIGNATION,json.getString("designation"));
         editor.putInt(ID,json.getInt("id"));
+        editor.putString(LOCATION,json.getString("location"));
         editor.apply();
 
     }
     public static void updateLabel(EditText edit, Calendar myCalendar) {
-        String myFormat = "dd/MM/yy"; //In which you need put here
+        String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         edit.setText(sdf.format(myCalendar.getTime()));
@@ -91,7 +96,9 @@ public class Functions {
 
     public static JSONObject connectHttp(URL url,String[] keys,String[] values) {
 
-        HttpURLConnection connection;
+        HttpURLConnection connection = null;
+        BufferedReader reader = null;
+        BufferedWriter writer = null;
 
         try {
 
@@ -107,21 +114,19 @@ public class Functions {
 
             }
             String query = builder.build().getEncodedQuery();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+            writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
             writer.write(query);
             writer.flush();
-            writer.close();
 
             int response_code = connection.getResponseCode();
             if(response_code == HttpURLConnection.HTTP_OK) {
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String line;
                 StringBuilder result = new StringBuilder();
                 while((line = reader.readLine()) != null) {
                     result.append(line);
                 }
-                reader.close();
                 Log.e("tag",result.toString());
                 return new JSONObject(result.toString());
             }
@@ -135,6 +140,7 @@ public class Functions {
                 error.put("msg","Error in Connecting to Server");
                 error.put("error",e.getMessage());
                 error.put("login",false);
+                error.put("signup",false);
                 return error;
             } catch (JSONException e1) {
                 e1.printStackTrace();
@@ -149,10 +155,22 @@ public class Functions {
                 error.put("msg","Error in Connecting to Server");
                 error.put("error",e.getMessage());
                 error.put("login",false);
+                error.put("signup",false);
                 return error;
             } catch (JSONException e1) {
                 Log.e("tag","error here in exception json");
                 e1.printStackTrace();
+            }
+        }
+        finally {
+            if(connection != null) connection.disconnect();
+            try {
+                if(reader != null)
+                    reader.close();
+                if(writer !=null)
+                    writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         return null;
@@ -164,9 +182,37 @@ public class Functions {
         String values[] = new String[k.size()];
         for(int i=0;i<k.size();i++) {
             keys[i] = k.get(i);
+//            Log.v("keys",keys[i]);
             values[i] = v.get(i);
+//            Log.v("keys",values[i]);
         }
         return connectHttp(url,keys, values);
+    }
+
+    public static boolean checkLocation(Context context,String currentLocation) {
+        SharedPreferences pref = context.getSharedPreferences(PREF,Context.MODE_PRIVATE);
+        String loc[] = pref.getString(LOCATION,"default").split("&");
+        String loc2[] = currentLocation.split("&");
+        double lat1 = Double.parseDouble(loc[0]);
+        double long1 = Double.parseDouble(loc[1]);
+        double lat2 = Double.parseDouble(loc2[0]);
+        double long2 = Double.parseDouble(loc2[1]);
+        float res[] = new float[1];
+        Location.distanceBetween(lat1,long1,lat2,long2,res);
+        return (res[0] < 1500);
+    }
+
+    public static void change(Context context,Button btn, boolean enable) {
+        if(enable) {
+            btn.setEnabled(true);
+            btn.setBackground(context.getResources().getDrawable(R.drawable.ripple_enable));
+            btn.setTextColor(context.getResources().getColor(R.color.bg_screen1));
+        }
+        else {
+            btn.setEnabled(false);
+            btn.setBackground(context.getResources().getDrawable(R.drawable.ripple_disable));
+            btn.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+        }
     }
 
 }

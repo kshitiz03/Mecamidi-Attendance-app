@@ -2,17 +2,27 @@ package com.mecamidi.www.mecamidiattendance;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +31,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +49,7 @@ import java.util.Locale;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PunchInOutFragment extends Fragment implements View.OnClickListener {
+public class PunchInOutFragment extends Fragment {
 
     private boolean punchedIn = false;
     private Button punchIn;
@@ -57,30 +69,61 @@ public class PunchInOutFragment extends Fragment implements View.OnClickListener
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_punch_in_out, container, false);
 
+
         SharedPreferences pref = getContext().getSharedPreferences(Functions.PREF,Context.MODE_PRIVATE);
         punchedIn = pref.getBoolean(Functions.PUNCH,false);
 
         punchOut = view.findViewById(R.id.punchout);
         punchIn = view.findViewById(R.id.punchin);
         if (punchedIn) {
-            punchIn.setEnabled(false);
-            punchOut.setEnabled(true);
+            Functions.change(getContext(),punchIn,false);
+            Functions.change(getContext(),punchOut,true);
         }
         else {
-            punchOut.setEnabled(false);
-            punchIn.setEnabled(true);
+            Functions.change(getContext(),punchOut,false);
+            Functions.change(getContext(),punchIn,true);
         }
-        punchIn.setOnClickListener(this); punchOut.setOnClickListener(this);
+        punchIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onButtonClick();
+                scheduleJob();
+            }
+        });
+        punchOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onButtonClick();
+            }
+        });
         return view;
     }
 
-    @Override
-    public void onClick(View v) {
+
+    public void onButtonClick() {
 
         Location loca = accessLocation();
         loc = String.format("%s&%s",loca.getLatitude(),loca.getLongitude());
-        Toast.makeText(getContext(),loc,Toast.LENGTH_LONG).show();
+//        loc = loca.toString();
+//        Toast.makeText(getContext(),loc,Toast.LENGTH_LONG).show();
+        if(!Functions.checkLocation(getActivity(),loc)) {
 
+            Intent intent = new Intent(getContext(),DashboardActivity.class);
+            PendingIntent pi = PendingIntent.getActivity(getContext(),0,intent,0);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(),Data.CHANNEL_ID).setSmallIcon(R.mipmap.ic_launcher_round).setContentTitle("Location").setContentText("Your location in incorrect.").setAutoCancel(true).setContentIntent(pi);
+            NotificationManagerCompat compat = NotificationManagerCompat.from(getContext());
+            compat.notify(0,builder.build());
+            return;
+        }
+        else {
+            Intent intent = new Intent(getContext(),DashboardActivity.class);
+            PendingIntent pi = PendingIntent.getActivity(getContext(),0,intent,0);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(),Data.CHANNEL_ID).setSmallIcon(R.mipmap.ic_launcher_round).setContentTitle("Location").setContentText("Your location in correct.").setAutoCancel(true).setContentIntent(pi);
+            NotificationManagerCompat compat = NotificationManagerCompat.from(getContext());
+            compat.notify(0,builder.build());
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Are You Sure?");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -103,46 +146,46 @@ public class PunchInOutFragment extends Fragment implements View.OnClickListener
         Location location;
         Log.v("Location","Accessed Location");
         LocationManager manager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        LocationListener listener = new GpsLocationListener();
+//        LocationListener listener = new GpsLocationListener();
         if(ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return null;
         }
         else {
-            manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
+//            manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
             location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             Log.v("Location","Location Send");
             return location;
         }
     }
 
-    private class GpsLocationListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location location) {
-            double lat = location.getLatitude();
-            double lon = location.getLongitude();
-//            String loc = String.format("Latitude: %s Longitude: %s",lat,lon);
-//            Toast toast = Toast.makeText(getContext(),loc,Toast.LENGTH_LONG);
+//    private class GpsLocationListener implements LocationListener {
+//
+//        @Override
+//        public void onLocationChanged(Location location) {
+//            double lat = location.getLatitude();
+//            double lon = location.getLongitude();
+////            String loc = String.format("Latitude: %s Longitude: %s",lat,lon);
+////            Toast toast = Toast.makeText(getContext(),loc,Toast.LENGTH_LONG);
+////            toast.show();
+//        }
+//
+//        @Override
+//        public void onProviderEnabled(String provider) {
+//            Toast toast = Toast.makeText(getContext(),"GPS Enabled",Toast.LENGTH_SHORT);
 //            toast.show();
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-            Toast toast = Toast.makeText(getContext(),"GPS Enabled",Toast.LENGTH_SHORT);
-            toast.show();
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-            Toast toast = Toast.makeText(getContext(),"GPS Disabled",Toast.LENGTH_SHORT);
-            toast.show();
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-    }
+//        }
+//
+//        @Override
+//        public void onProviderDisabled(String provider) {
+//            Toast toast = Toast.makeText(getContext(),"GPS Disabled",Toast.LENGTH_SHORT);
+//            toast.show();
+//        }
+//
+//        @Override
+//        public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//        }
+//    }
 
 
     private class MarkAttendanceAsyncTask extends AsyncTask<String,Void,JSONObject> {
@@ -190,7 +233,14 @@ public class PunchInOutFragment extends Fragment implements View.OnClickListener
                 keys.add("intime"); values.add(ts.toString());
                 keys.add("inlocation"); values.add(location);
             }
-            return Functions.connectHttp(url,keys,values);
+            DatabaseHandler handler = new DatabaseHandler(getContext());
+            try {
+                return handler.addData(url,punchedIn,keys,values);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+//            return Functions.connectHttp(url,keys,values);
+            return null;
         }
 
         @Override
@@ -199,14 +249,8 @@ public class PunchInOutFragment extends Fragment implements View.OnClickListener
             if (result.has("msg")) {
                 try {
                     Functions.showToast(getContext(),result.getString("msg"));
-                    if (!punchedIn) {
-                        punchIn.setEnabled(false);
-                        punchOut.setEnabled(true);
-                    }
-                    else {
-                        punchOut.setEnabled(false);
-                        punchIn.setEnabled(true);
-                    }
+                    Functions.change(getContext(),punchIn,!punchIn.isEnabled());
+                    Functions.change(getContext(),punchOut,!punchOut.isEnabled());
                     punchedIn = !punchedIn;
                     SharedPreferences.Editor editor = getContext().getSharedPreferences(Functions.PREF,Context.MODE_PRIVATE).edit();
                     editor.putBoolean(Functions.PUNCH,punchedIn);
@@ -220,4 +264,12 @@ public class PunchInOutFragment extends Fragment implements View.OnClickListener
             }
         }
     }
+
+
+    private void scheduleJob() {
+
+        JobScheduler scheduler = (JobScheduler)getContext().getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        scheduler.schedule(new JobInfo.Builder(Data.HOUR_18_JOB,new ComponentName(getContext(),CheckPunchOutService.class)).setPersisted(true).setMinimumLatency(64800000).build());
+    }
+
 }

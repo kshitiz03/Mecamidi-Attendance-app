@@ -2,11 +2,14 @@ package com.mecamidi.www.mecamidiattendance;
 
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -30,6 +33,13 @@ public class TeamAttendanceFragment extends Fragment {
         getActivity().setTitle(R.string.nav_teamattd);
         // Inflate the layout for this fragment
         View some=inflater.inflate(R.layout.fragment_team_attendance, container, false);
+
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(some.getContext(), android.R.layout.simple_list_item_1, memberall);
+        AutoCompleteTextView tv = (AutoCompleteTextView) some.findViewById(R.id.teamattd);
+
+        tv.setAdapter(adapter);
+
         final Calendar myCalendar = Calendar.getInstance();
 
         final EditText edittext= (EditText) some.findViewById(R.id.Birthday2);
@@ -94,9 +104,18 @@ public class TeamAttendanceFragment extends Fragment {
                 dt.show();
             }
         });
+        some.findViewById(R.id.show_team).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),AttendanceActivity.class));
+                //finish();
+            }
+        });
 
 
         return some;
     }
-
+    private static final String[] memberall = new String[] {
+            "Kshitiz", "Ashwin", "Aviral", "Parampreet", "Anu", "Ashwin1", "Ashwin2"
+    };
 }

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadeScrollbars="true">
+<LinearLayout
     android:layout_width="match_parent"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -14,26 +20,16 @@
         android:textColor="@color/bg_screen2"
         android:text="Enter Employee id " />
 
-    <android.support.design.widget.TextInputLayout
+    <AutoCompleteTextView
+        android:id="@+id/teamattd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/emp_name"
+        android:textColor="@color/bg_screen2"
+        android:textAlignment="center"
+        android:gravity="center"
         android:theme="@style/EditTextHint"
-        android:layout_marginBottom="20dp">
-
-        <EditText
-            android:id="@+id/add_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textColorHint="@color/bg_screen2"
-            android:hint="Id"
-            android:textColor="@color/bg_screen2"
-            android:layout_marginBottom="20dp"
-            android:inputType="text"
-            android:textAlignment="center" />
-
-    </android.support.design.widget.TextInputLayout>
+        android:layout_marginBottom="20dp"/>
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -100,15 +96,16 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/show_my"
+        android:id="@+id/show_team"
         android:elevation="10dp"
         android:padding="5dp"
         android:layout_margin="20dp"
         android:textColor="@color/bg_screen1"
-        android:background="@drawable/ripple"
+        android:background="@drawable/ripple_enable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/show" />
 
 </LinearLayout>
+</ScrollView>

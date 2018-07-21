@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:fadeScrollbars="true">
+<LinearLayout
+    android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
 
@@ -22,6 +26,23 @@
         android:layout_margin="20dp"
         android:textColor="@color/bg_screen2"
         android:text="Type OF Leave" />
+
+    <!--<AutoCompleteTextView-->
+        <!--android:id="@+id/leave"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Enter Leave Type"-->
+        <!--android:textColor="@color/bg_screen2"-->
+        <!--android:textAlignment="center"-->
+        <!--android:gravity="center"-->
+        <!--android:theme="@style/EditTextHint"-->
+        <!--android:layout_marginBottom="20dp"/>-->
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/leave"
+        android:layout_marginLeft="10dp"
+        />
 
 
     <!-- TODO: Update blank fragment layout -->
@@ -53,7 +74,7 @@
         android:layout_width="match_parent"
         android:textColorHint="@color/colorPrimary"
         android:textColor="@color/colorPrimary"
-        android:id="@+id/Birthday"
+        android:id="@+id/start"
         android:clickable="true"
         android:layout_margin="20dp"
         android:inputType="none"
@@ -80,11 +101,27 @@
         android:layout_width="match_parent"
         android:textColorHint="@color/colorPrimary"
         android:textColor="@color/colorPrimary"
-        android:id="@+id/Birthday1"
+        android:id="@+id/end"
         android:clickable="true"
         android:layout_margin="20dp"
         android:inputType="none"
         android:hint="End Date"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/EditTextHint"
+        android:layout_marginBottom="20dp">
+    <EditText
+        android:id="@+id/description"
+        android:layout_gravity="start"
+        android:gravity="start"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:hint="Description(optional)"
+        android:textColorHint="@color/bg_screen2"
+        android:inputType="text|textMultiLine"/>
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -93,10 +130,22 @@
         android:padding="5dp"
         android:layout_margin="20dp"
         android:textColor="@color/bg_screen1"
-        android:background="@drawable/ripple"
+        android:background="@drawable/ripple_enable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Ask For Leave" />
 
+    <Button
+        android:id="@+id/Leave_stat"
+        android:elevation="10dp"
+        android:padding="5dp"
+        android:layout_margin="20dp"
+        android:textColor="@color/bg_screen1"
+        android:background="@drawable/ripple_enable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Leave Status" />
 </LinearLayout>
+</ScrollView>

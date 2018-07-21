@@ -86,6 +86,8 @@ public class DashboardFragment extends Fragment{
                 SharedPreferences.Editor log = getActivity().getSharedPreferences(Functions.PREF, MODE_PRIVATE).edit();
                 log.clear();
                 log.apply();
+                DatabaseHandler handler = new DatabaseHandler(getContext());
+                handler.clearAll();
                 Intent lognew = new Intent(getActivity(), MainActivity.class);
                 startActivity(lognew);
                 getActivity().finish();

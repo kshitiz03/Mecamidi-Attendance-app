@@ -38,7 +38,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-
+    <string name="emp_id">Enter Employee Aadhar ID</string>
     <string name="nav_dash">Dashboard</string>
     <string name="nav_punch">Punch In/Out</string>
     <string name="nav_myattd">My Attendance</string>
@@ -56,6 +56,8 @@
     <string name="show">Show Attendance</string>
     <string name="emp_name">Enter Employee Name</string>
     <string name="nav_proja">Project Assignment</string>
+    <string name="nav_userman">User Manual</string>
+    <string name="nav_la">Leave Approval</string>
 
 
 </resources>

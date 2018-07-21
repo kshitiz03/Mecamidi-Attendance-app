@@ -1,9 +1,13 @@
 package com.mecamidi.www.mecamidiattendance;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -26,6 +30,7 @@ public class DashboardActivity extends AppCompatActivity  implements NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        createNotificationChannel();
         Toolbar dash= findViewById(R.id.toolbar);
         setSupportActionBar(dash);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
@@ -88,7 +93,12 @@ public class DashboardActivity extends AppCompatActivity  implements NavigationV
             case R.id.nav_proj:
                 fragment = new ProjectAssignFragment();
                 break;
-
+            case R.id.nav_levap:
+                fragment = new Leave_ApprovalFragment();
+                break;
+            case R.id.nav_user:
+                intent = new Intent(this,UserManualActivity.class);
+                break;
             default:
                 fragment = new DashboardFragment();
         }
@@ -121,6 +131,16 @@ public class DashboardActivity extends AppCompatActivity  implements NavigationV
         }
         else {
             super.onBackPressed();
+        }
+    }
+
+    private void createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String name = "Notification Channel";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(Data.CHANNEL_ID,name,importance);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 }
