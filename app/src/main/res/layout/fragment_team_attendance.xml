@@ -95,17 +95,51 @@
         android:hint="End Date"/>
     </android.support.design.widget.TextInputLayout>
 
+        <Button
+            android:id="@+id/show_team"
+            android:elevation="10dp"
+            android:padding="5dp"
+            android:layout_margin="20dp"
+            android:textColor="@color/bg_screen1"
+            android:background="@drawable/ripple_enable"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.5"
+            android:text="@string/show" />
+
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:id="@+id/export_layout">-->
+
     <Button
-        android:id="@+id/show_team"
-        android:elevation="10dp"
-        android:padding="5dp"
-        android:layout_margin="20dp"
-        android:textColor="@color/bg_screen1"
-        android:background="@drawable/ripple_enable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/show" />
+            android:id="@+id/export"
+            android:elevation="10dp"
+            android:padding="5dp"
+            android:layout_margin="20dp"
+            android:textColor="@color/bg_screen1"
+            android:background="@drawable/ripple_enable"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:text="@string/export" />
+
+        <!--<Button-->
+            <!--android:id="@+id/open"-->
+            <!--android:elevation="10dp"-->
+            <!--android:padding="5dp"-->
+            <!--android:layout_margin="20dp"-->
+            <!--android:textColor="@color/bg_screen1"-->
+            <!--android:background="@drawable/ripple_enable"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_weight="0.5"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Open File" />-->
+
+    <!--</LinearLayout>-->
 
 </LinearLayout>
 </ScrollView>

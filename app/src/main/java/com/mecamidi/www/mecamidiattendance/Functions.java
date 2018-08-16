@@ -1,12 +1,17 @@
 package com.mecamidi.www.mecamidiattendance;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static android.content.Context.LOCATION_SERVICE;
+
 public class Functions {
 
     public static final String PREF = "LoginPref";
@@ -42,6 +49,31 @@ public class Functions {
     public static final String ID = "idKey";
     public static final String LOCATION = "locationKey";
     public static final String PUNCH = "punchKey";
+    public static final String PROJECT = "projectKey";
+    public static final String PRJLOCATION = "prjlocationKey";
+    public static final String PRJNAME = "prjnameKey";
+    public static final String PROJECTNAME = "projectnameKey";
+
+    public static Location accessLocation(Context context) {
+        Location location;
+        Log.v("Location","Accessed Location");
+        LocationManager manager = (LocationManager)context.getSystemService(LOCATION_SERVICE);
+//        LocationListener listener = new GpsLocationListener();
+        if(ContextCompat.checkSelfPermission(context.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context.getApplicationContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return null;
+        }
+        else {
+//            manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
+            location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if(location == null) {
+                return null;
+            }
+            Log.v("Location","Location Send");
+            Log.e("Location",location.toString());
+            return location;
+        }
+    }
+
     public static void showToast(Context context,int id) {
 
 //        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_layout),id,Snackbar.LENGTH_SHORT);
@@ -76,12 +108,11 @@ public class Functions {
         editor.putString(EMAIL,json.getString("email"));
         editor.putString(LOGINID,json.getString("code"));
         editor.putString(ADDRESS,json.getString("address"));
-        if(json.getString("admin").equals("0")) editor.putBoolean(ADMIN,false);
-        else editor.putBoolean(ADMIN,true);
+        editor.putInt(ADMIN,json.getInt("admin"));
         editor.putString(DOB,json.getString("dob"));
         editor.putString(DESIGNATION,json.getString("designation"));
         editor.putInt(ID,json.getInt("id"));
-        editor.putString(LOCATION,json.getString("location"));
+//        editor.putString(LOCATION,json.getString("location"));
         editor.apply();
 
     }
@@ -107,16 +138,16 @@ public class Functions {
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
 
-            Uri.Builder builder = new Uri.Builder();
-            for (int i=0;i<keys.length;i++) {
-
-                builder.appendQueryParameter(keys[i],values[i]);
-
+            if(keys.length > 0) {
+                Uri.Builder builder = new Uri.Builder();
+                for (int i=0;i<keys.length;i++) {
+                    builder.appendQueryParameter(keys[i],values[i]);
+                }
+                String query = builder.build().getEncodedQuery();
+                writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+                writer.write(query);
+                writer.flush();
             }
-            String query = builder.build().getEncodedQuery();
-            writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-            writer.write(query);
-            writer.flush();
 
             int response_code = connection.getResponseCode();
             if(response_code == HttpURLConnection.HTTP_OK) {
@@ -193,12 +224,16 @@ public class Functions {
         SharedPreferences pref = context.getSharedPreferences(PREF,Context.MODE_PRIVATE);
         String loc[] = pref.getString(LOCATION,"default").split("&");
         String loc2[] = currentLocation.split("&");
+        if(loc[0].equals("default")) {
+            return false;
+        }
         double lat1 = Double.parseDouble(loc[0]);
         double long1 = Double.parseDouble(loc[1]);
         double lat2 = Double.parseDouble(loc2[0]);
         double long2 = Double.parseDouble(loc2[1]);
         float res[] = new float[1];
         Location.distanceBetween(lat1,long1,lat2,long2,res);
+        Log.e("distance",String.valueOf(res[0]));
         return (res[0] < 1500);
     }
 

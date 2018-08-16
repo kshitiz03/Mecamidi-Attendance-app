@@ -13,6 +13,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +44,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String query = "create table punch (date date,intime timestamp,inlocation varchar(50),outtime timestamp, outlocation varchar(50), id integer)";
         db.execSQL(query);
-        query = "create table workers (name varchar(50),aadharid varchar(12), date_of_joining varchar(20))";
+        query = "create table workers (name varchar(50),aadharid varchar(12), date_of_joining varchar(20),contact varchar(10))";
         db.execSQL(query);
         query = "create table team (aadharid varchar(12),date date,time timestamp)";
         db.execSQL(query);
@@ -148,6 +149,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void clearAll() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from punch");
+        db.execSQL("delete from workers");
+        db.execSQL("delete from team");
         db.close();
     }
 
@@ -171,6 +174,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         String doj = d.format(date);
         cv.put("date_of_joining",doj);
+        cv.put("contact",member.getContact());
         db.insert(WORKERS,null,cv);
         ArrayList<String> keys = new ArrayList<>();
         ArrayList<String> values = new ArrayList<>();
@@ -178,8 +182,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         keys.add("aadharid"); values.add(member.getAadharid());
         keys.add("doj"); values.add(doj);
         keys.add("id"); values.add(String.valueOf(id));
+        keys.add("contact"); values.add(member.getContact());
         try {
             JSONObject j = Functions.connectHttp(new URL(Data.URL_ADD_MEMBER),keys,values);
+            Log.e("tag",j.toString());
             j.put("add",true);
 
             return j;
@@ -290,6 +296,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         cursor.close();
         j.put("done",true);
+        return j;
+    }
+
+    public void addMember(JSONArray team) throws JSONException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        for(int i=0;i<team.length();i++) {
+            JSONObject current = team.getJSONObject(i);
+            ContentValues cv = new ContentValues();
+            cv.put("name",current.getString("name"));
+            cv.put("aadharid",current.getString("aadharid"));
+            cv.put("date_of_joining",current.getString("doj"));
+            cv.put("contact",current.getString("contact"));
+            db.insert(WORKERS,null,cv);
+        }
+    }
+
+    public JSONObject returnAadhar(String name) throws JSONException {
+        SQLiteDatabase read = this.getReadableDatabase();
+        JSONObject j = new JSONObject();
+        Cursor cursor = read.query(WORKERS,new String[]{"aadharid"},"name = ?",new String[]{name},null,null,null);
+        if(cursor.getCount() == 0) {
+            j.put("msg","No one present");
+            j.put("found",false);
+            return j;
+        }
+        if(cursor.moveToFirst()) {
+            String aadharid = cursor.getString(0);
+            j.put("msg",aadharid);
+            j.put("found",true);
+        }
+        cursor.close();
+        read.close();
         return j;
     }
 }

@@ -8,9 +8,9 @@ public class Leave_ApprovalActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_leave__approval);
+        setContentView(R.layout.fragment_leave_approval);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container2, new Leave_ApprovalFragment())
+                .replace(R.id.container2, new LeaveApprovalFragment())
                 .commit();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

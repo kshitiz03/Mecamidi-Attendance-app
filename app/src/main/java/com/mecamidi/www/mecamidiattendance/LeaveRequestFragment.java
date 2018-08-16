@@ -27,9 +27,12 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Date;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 
 /**
@@ -46,7 +49,7 @@ public class LeaveRequestFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         getActivity().setTitle(R.string.nav_levreq);
         final View some = inflater.inflate(R.layout.fragment_leave_request, container, false);
@@ -143,11 +146,24 @@ public class LeaveRequestFragment extends Fragment {
 
                 String start = edittext.getText().toString();
                 String end = edittext1.getText().toString();
+                String desc = ((EditText)some.findViewById(R.id.description)).getText().toString();
                 if(end.equals("") || start.equals("")) {
                     Functions.showToast(getContext(),"Some fields are empty");
                     return;
                 }
-                new RequestLeaveTask().execute(start,end);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+                try {
+                    Date e = sdf.parse(end);
+                    Date s = sdf.parse(start);
+                    if (s.after(e)) {
+                        Functions.showToast(getContext(),"End date cannot be before start date");
+                        return;
+                    }
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
+                new RequestLeaveTask().execute(start,end,desc);
             }
         });
 
@@ -183,10 +199,12 @@ public class LeaveRequestFragment extends Fragment {
 
             String start = data[0];
             String end = data[1];
+            String desc = data[2];
             ArrayList<String> keys = new ArrayList<>();
             ArrayList<String> values = new ArrayList<>();
             keys.add("start"); values.add(start);
             keys.add("end"); values.add(end);
+            keys.add("reason"); values.add(desc);
             keys.add("leave_type"); values.add(String.valueOf(leave_type+1));
             String id = String.valueOf(getContext().getSharedPreferences(Functions.PREF, Context.MODE_PRIVATE).getInt(Functions.ID,-1));
             keys.add("id"); values.add(id);

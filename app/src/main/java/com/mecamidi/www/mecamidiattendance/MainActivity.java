@@ -7,17 +7,20 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},Data.REQUEST_CODE);
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},Data.REQUEST_CODE);
 
         SharedPreferences pref = getSharedPreferences(Functions.PREF,MODE_PRIVATE);
         if(pref.contains(Functions.LOGINID)) {
@@ -43,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
             finish();
         }
-
+        File attDir = new File(Environment.getExternalStorageDirectory().getPath().concat("/MHPP Attendance/"));
+        attDir.mkdir();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
@@ -120,11 +124,13 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(JSONObject result) {
 
             try {
-
                 if(result.getBoolean("login")) {
                     if(result.has("data")) {
                         JSONObject data = result.getJSONObject("data");
                         Functions.addToPreferences(MainActivity.this,data);
+                        JSONArray team = result.getJSONArray("team");
+                        DatabaseHandler handler = new DatabaseHandler(MainActivity.this);
+                        handler.addMember(team);
                         Intent intent = new Intent(MainActivity.this,DashboardActivity.class);
                         startActivity(intent);
                         finish();

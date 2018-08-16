@@ -1,20 +1,24 @@
 package com.mecamidi.www.mecamidiattendance;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class WordAdapter2 extends ArrayAdapter<Word2> {
 
+    private Context context;
 
     public WordAdapter2(Context context, ArrayList<Word2> words2) {
         super(context, 0, words2);
+        this.context = context;
     }
 
     @Override
@@ -27,6 +31,8 @@ public class WordAdapter2 extends ArrayAdapter<Word2> {
         }
 
         Word2 currentWord = getItem(position);
+
+        final String desc = currentWord.getDesc();
 
         TextView miwokTextView = (TextView) listItemView.findViewById(R.id.startd);
         // Get the Miwok translation from the currentWord object and set this text on
@@ -54,6 +60,18 @@ public class WordAdapter2 extends ArrayAdapter<Word2> {
         int color = ContextCompat.getColor(getContext(), R.color.bg_screen1);
         // Set the background color of the text container View
         textContainer.setBackgroundColor(color);
+
+        listItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(desc).setPositiveButton("OK",null);
+                builder.create().show();
+            }
+        });
+
+        Button approve = listItemView.findViewById(R.id.approve);
+        Button reject = listItemView.findViewById(R.id.reject);
 
         return listItemView;
     }

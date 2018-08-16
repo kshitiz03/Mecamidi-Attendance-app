@@ -19,7 +19,9 @@
         <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:datePickerDialogTheme">@color/bg_screen2</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

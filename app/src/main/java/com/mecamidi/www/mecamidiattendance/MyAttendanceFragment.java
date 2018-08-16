@@ -21,22 +21,10 @@ import android.widget.EditText;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-
-import android.util.Log;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
-import android.provider.CalendarContract;
-import android.content.DialogInterface;
-import android.database.Cursor;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import android.widget.PopupWindow;
@@ -44,6 +32,7 @@ import android.widget.PopupWindow;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.Locale;
 
 
@@ -142,6 +131,19 @@ public class MyAttendanceFragment extends Fragment {
                     Functions.showToast(getContext(),R.string.empty_fields);
                     return;
                 }
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+                try {
+                    Date e = sdf.parse(end);
+                    Date s = sdf.parse(start);
+                    if (s.after(e)) {
+                        Functions.showToast(getContext(),"End date cannot be before start date");
+                        return;
+                    }
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
                 new MyAttendanceTask().execute(start,end);
             }
         });
@@ -195,7 +197,7 @@ public class MyAttendanceFragment extends Fragment {
                 Log.e("tag",s.toString());
             try {
                 if(s.has("login") && !s.getBoolean("login")) {
-                    Functions.showToast(getContext(),s.getString("msg"));
+                    Functions.showToast(getContext(),"No internet connection");
                 }
                 else {
                     Intent intent = new Intent(getContext(),AttendanceActivity.class);

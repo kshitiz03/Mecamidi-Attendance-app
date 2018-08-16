@@ -13,9 +13,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class SendDataService extends JobService {
+public class SendProjectService extends JobService {
 
-    public SendDataService() {
+    public SendProjectService() {
     }
 
 
@@ -37,27 +37,36 @@ public class SendDataService extends JobService {
         @Override
         protected JSONObject doInBackground(JobParameters... jobParameters) {
             param = jobParameters[0];
-            boolean punchedIn = Boolean.parseBoolean(param.getExtras().get(Functions.PUNCH).toString());
-            DatabaseHandler handler = new DatabaseHandler(SendDataService.this);
-            try {
+            SharedPreferences pref = getSharedPreferences(Functions.PREF,MODE_PRIVATE);
+            if(pref.contains(Functions.PRJLOCATION)) {
+                ArrayList<String> keys = new ArrayList<>();
+                ArrayList<String> values = new ArrayList<>();
 
-                return handler.sendData(punchedIn);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                keys.add("name"); values.add(pref.getString(Functions.PRJNAME,""));
+                keys.add("address"); values.add(pref.getString(Functions.PROJECT,""));
+                keys.add("location"); values.add(pref.getString(Functions.PRJLOCATION,""));
+                URL url = null;
+                try {
+                    url = new URL(Data.URL_ADD_PROJECT);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+
+                return Functions.connectHttp(url,keys,values);
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(JSONObject result) {
+            if(result == null) {
+                jobFinished(param,false);
+            }
             try {
-                if(result.has("done") && result.getBoolean("done")) {
                     if(result.has("msg")) {
-                        Functions.showToast(SendDataService.this,result.getString("msg"));
+                        Functions.showToast(SendProjectService.this,result.getString("msg"));
                     }
                     jobFinished(param,false);
-                }
-                else jobFinished(param,true);
             } catch (JSONException e) {
                 e.printStackTrace();
                 jobFinished(param,true);

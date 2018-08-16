@@ -13,4 +13,11 @@ public class Data {
     public static final String URL_SHOW_LEAVE = "http://ec2-35-154-30-215.ap-south-1.compute.amazonaws.com/showleave.php";
     public static final String URL_ADD_MEMBER = "http://ec2-35-154-30-215.ap-south-1.compute.amazonaws.com/team.php";
     public static final String URL_TEAMATT = "http://ec2-35-154-30-215.ap-south-1.compute.amazonaws.com/teamatt.php";
+    public static final String URL_SHOW_TEAM = "http://ec2-35-154-30-215.ap-south-1.compute.amazonaws.com/showteamatt.php";
+    public static final String URL_APPROVE = "http://ec2-35-154-30-215.ap-south-1.compute.amazonaws.com/leaveapprove.php";
+    public static final String URL_PROJECT = "http://ec2-35-154-30-215.ap-south-1.compute.amazonaws.com/changeproject.php";
+    public static final String URL_ADD_PROJECT = "http://ec2-35-154-30-215.ap-south-1.compute.amazonaws.com/addproject.php";
+    public static final String URL_ANN = "http://ec2-35-154-30-215.ap-south-1.compute.amazonaws.com/ann.php";
+    public static final String URL_UPDATE_PROJECT = "http://ec2-35-154-30-215.ap-south-1.compute.amazonaws.com/updateproject.php";
+    public static final String URL_EXPORT = "http://ec2-35-154-30-215.ap-south-1.compute.amazonaws.com/excel.php";
 }

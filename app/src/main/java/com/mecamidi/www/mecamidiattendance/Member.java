@@ -8,11 +8,17 @@ public class Member {
     private String aadharid;
     private Date dateOfJoining;
     private int id;
+    private String contact;
 
-    public Member(String name,String aadharid,Date date) {
+    public Member(String name,String aadharid,Date date,String contact) {
         this.aadharid = aadharid;
         this.name = name;
         this.dateOfJoining = date;
+        this.contact = contact;
+    }
+
+    public String getContact() {
+        return contact;
     }
 
     public String getName() {

@@ -3,6 +3,7 @@
     package="com.mecamidi.www.mecamidiattendance">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,6 +17,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCTksoP103WWP25gLPgxVjF7VrFr7ARf7o" />
+
         <activity
             android:name=".WelcomeActivity"
             android:screenOrientation="portrait">
@@ -50,14 +65,29 @@
 
         <activity android:name=".LeaveView" />
         <activity android:name=".WordAdapter" />
-        <activity android:name=".WordAdapter2" />
         <activity android:name=".WordAdapter1" />
-        <activity android:name=".Leave_ApprovalActivity" />
         <activity android:name=".AttendanceActivity" />
-        <activity android:name=".UserManualActivity" />
 
         <service
             android:name=".MarkTeamService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".ProjectService"
+            android:exported="false" />
+        <service
+            android:name=".SendProjectService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE"/>

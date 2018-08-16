@@ -43,7 +43,10 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 
 /**
@@ -55,6 +58,7 @@ public class PunchInOutFragment extends Fragment {
     private Button punchIn;
     private Button punchOut;
     private String loc;
+    LocationManager mLocationManager;
 
     public PunchInOutFragment() {
         // Required empty public constructor
@@ -102,18 +106,20 @@ public class PunchInOutFragment extends Fragment {
 
     public void onButtonClick() {
 
-        Location loca = accessLocation();
+        Location loca = Functions.accessLocation(getContext());
+        if(loca == null) {
+            Functions.showToast(getContext(),"Your location cannot be determined. Ensure that location is enabled in settings");
+            return;
+        }
         loc = String.format("%s&%s",loca.getLatitude(),loca.getLongitude());
 //        loc = loca.toString();
 //        Toast.makeText(getContext(),loc,Toast.LENGTH_LONG).show();
         if(!Functions.checkLocation(getActivity(),loc)) {
-
-            Intent intent = new Intent(getContext(),DashboardActivity.class);
-            PendingIntent pi = PendingIntent.getActivity(getContext(),0,intent,0);
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(),Data.CHANNEL_ID).setSmallIcon(R.mipmap.ic_launcher_round).setContentTitle("Location").setContentText("Your location in incorrect.").setAutoCancel(true).setContentIntent(pi);
-            NotificationManagerCompat compat = NotificationManagerCompat.from(getContext());
-            compat.notify(0,builder.build());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Wrong Location!!");
+            builder.setMessage("You are in wrong location. You cannot punch in/out until you are near your site location or maybe your location in not updated. Click on Update Project on Dashboard");
+            builder.setPositiveButton("OK",null);
+            builder.create().show();
             return;
         }
         else {
@@ -142,51 +148,28 @@ public class PunchInOutFragment extends Fragment {
         dialog.show();
     }
 
-    private Location accessLocation() {
-        Location location;
-        Log.v("Location","Accessed Location");
-        LocationManager manager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-//        LocationListener listener = new GpsLocationListener();
-        if(ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return null;
-        }
-        else {
-//            manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
-            location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            Log.v("Location","Location Send");
-            return location;
-        }
-    }
 
-//    private class GpsLocationListener implements LocationListener {
-//
-//        @Override
-//        public void onLocationChanged(Location location) {
-//            double lat = location.getLatitude();
-//            double lon = location.getLongitude();
-////            String loc = String.format("Latitude: %s Longitude: %s",lat,lon);
-////            Toast toast = Toast.makeText(getContext(),loc,Toast.LENGTH_LONG);
-////            toast.show();
-//        }
-//
-//        @Override
-//        public void onProviderEnabled(String provider) {
-//            Toast toast = Toast.makeText(getContext(),"GPS Enabled",Toast.LENGTH_SHORT);
-//            toast.show();
-//        }
-//
-//        @Override
-//        public void onProviderDisabled(String provider) {
-//            Toast toast = Toast.makeText(getContext(),"GPS Disabled",Toast.LENGTH_SHORT);
-//            toast.show();
-//        }
-//
-//        @Override
-//        public void onStatusChanged(String provider, int status, Bundle extras) {
-//
+
+//    private Location getLastKnownLocation() {
+//        mLocationManager = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE);
+//        List<String> providers = mLocationManager.getProviders(true);
+//        Location bestLocation = null;
+//        if(ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return null;
+//        } else {
+//            for (String provider : providers) {
+//                Location l = mLocationManager.getLastKnownLocation(provider);
+//                if (l == null) {
+//                    continue;
+//                }
+//                if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+//                    // Found best last known location: %s", l);
+//                    bestLocation = l;
+//                }
+//            }
+//            return bestLocation;
 //        }
 //    }
-
 
     private class MarkAttendanceAsyncTask extends AsyncTask<String,Void,JSONObject> {
 

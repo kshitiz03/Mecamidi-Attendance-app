@@ -38,28 +38,35 @@
             android:title="@string/nav_levreq"
             android:textColor="#DCDCDC"
             android:id="@+id/nav_levreq"/>
-        <item
-            android:icon="@drawable/addmem"
-            android:title="@string/nav_altm"
-            android:textColor="#DCDCDC"
-            android:id="@+id/nav_altermem"/>
-        <item
-            android:icon="@drawable/proj"
-            android:title="@string/nav_proja"
-            android:textColor="#DCDCDC"
-            android:id="@+id/nav_proj"/>
 
         <item
             android:icon="@drawable/la"
             android:title="@string/nav_la"
             android:textColor="#DCDCDC"
             android:id="@+id/nav_levap"/>
+        <item
+            android:icon="@drawable/addmem"
+            android:title="@string/nav_altm"
+            android:textColor="#DCDCDC"
+            android:id="@+id/nav_altermem"/>
+
+        <item
+            android:icon="@drawable/addprj"
+            android:title="@string/add_prj"
+            android:textColor="#DCDCDC"
+            android:id="@+id/nav_addprj"/>
+
+        <item
+            android:icon="@drawable/proj"
+            android:title="@string/nav_proja"
+            android:textColor="#DCDCDC"
+            android:id="@+id/nav_proj"/>
+
     </group>
 
     <item
         android:title="@string/nav_support"
-        android:id="@+id/nav_support"
-        >
+        android:id="@+id/nav_support">
 
         <menu>
 
@@ -68,12 +75,6 @@
                 android:title="@string/nav_coninf"
                 android:textColor="#DCDCDC"
                 android:icon="@drawable/contact"/>
-
-            <item
-                android:id="@+id/nav_user"
-                android:title="@string/nav_userman"
-                android:textColor="#DCDCDC"
-                android:icon="@drawable/um"/>
 
         </menu>
 

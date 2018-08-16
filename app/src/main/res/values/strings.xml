@@ -32,6 +32,7 @@
 
     <string name="email">E-mail id</string>
     <string name="empid">Employee id</string>
+    <string name="contact">Enter Contact</string>
 
     <string name="photo">Upload Photo</string>
 
@@ -58,6 +59,13 @@
     <string name="nav_proja">Project Assignment</string>
     <string name="nav_userman">User Manual</string>
     <string name="nav_la">Leave Approval</string>
-
+    <string name="no_desc">No reason provided</string>
+    <string name="prj_name">Project Name</string>
+    <string name="location">Location</string>
+    <string name="add_prj">Add Project</string>
+    <string name="done">Done</string>
+    <string name="edit">Edit</string>
+    <string name="export">Export</string>
+    <string name="contactno">Contact Number</string>
 
 </resources>

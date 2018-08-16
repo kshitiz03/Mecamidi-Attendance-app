@@ -3,6 +3,7 @@ package com.mecamidi.www.mecamidiattendance;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -37,6 +38,7 @@ public class AttendanceActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         String s = getIntent().getStringExtra(EXTRA_DATA);
+        Log.e("tag",s);
         try {
             JSONObject json = new JSONObject(s);
             JSONArray array = json.getJSONArray("attendance");
@@ -44,11 +46,19 @@ public class AttendanceActivity extends AppCompatActivity {
 
                 JSONObject current = array.getJSONObject(i);
                 String date = current.getString("date");
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:MM", Locale.US);
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.US);
                 Timestamp sts = Timestamp.valueOf(current.getString("intime"));
                 String in = sdf.format(sts);
-                Timestamp ets = Timestamp.valueOf(current.getString("outtime"));
-                String out = sdf.format(ets);
+                String out = null;
+                String o = current.getString("outtime");
+                Log.e("tag",o);
+                try {
+                    Timestamp ets = Timestamp.valueOf(o);
+                    out = sdf.format(ets);
+                }
+                catch (IllegalArgumentException e) {
+                    out = "";
+                }
                 String mark = current.getString("mark");
                 Word1 word = new Word1(date,in,out,mark.toUpperCase());
                 words1.add(word);

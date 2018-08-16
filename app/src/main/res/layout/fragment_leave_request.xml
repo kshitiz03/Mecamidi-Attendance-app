@@ -41,8 +41,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/leave"
-        android:layout_marginLeft="10dp"
-        />
+        android:gravity="center"
+        android:layout_margin="20dp"/>
 
 
     <!-- TODO: Update blank fragment layout -->
@@ -120,6 +120,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:hint="Description(optional)"
+        android:layout_margin="20dp"
         android:textColorHint="@color/bg_screen2"
         android:inputType="text|textMultiLine"/>
     </android.support.design.widget.TextInputLayout>

@@ -6,13 +6,16 @@ public class Word2 {
     private String startdate;
     private String enddate;
     private String type;
+    private String desc;
+    private int leaveId;
 
-
-    public Word2(String mname, String mstartdate, String menddate, String mtype) {
+    public Word2(String mname, String mstartdate, String menddate, String mtype,String desc,int leaveId) {
         name = mname;
         startdate = mstartdate;
         enddate = menddate;
         type = mtype;
+        this.desc = desc;
+        this.leaveId = leaveId;
     }
 
     public String getName() {
@@ -23,18 +26,19 @@ public class Word2 {
         return startdate;
     }
 
-    /**
-     * Get the Miwok translation of the word.
-     */
     public String getEnddate() {
         return enddate;
     }
 
-
-    /**
-     * Return the image resource ID of the word.
-     */
     public String getType() {
         return type;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public int getLeaveId() {
+        return leaveId;
     }
 }

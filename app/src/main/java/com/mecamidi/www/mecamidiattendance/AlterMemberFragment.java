@@ -52,8 +52,13 @@ public class AlterMemberFragment extends Fragment {
             public void onClick(View view) {
                 String name = ((EditText)some.findViewById(R.id.add_name)).getText().toString();
                 String aadharid = ((EditText)some.findViewById(R.id.add_id)).getText().toString();
-                if(name.equals("") || aadharid.equals("")) {
+                String contact = ((EditText)some.findViewById(R.id.contact)).getText().toString();
+                if(name.equals("") || aadharid.equals("") || contact.equals("")) {
                     Functions.showToast(getContext(),"Some Fields Are Empty");
+                    return;
+                }
+                if(contact.length()!=10) {
+                    Functions.showToast(getContext(),"Invalid Contact");
                     return;
                 }
                 if(aadharid.length()!=12) {
@@ -62,7 +67,7 @@ public class AlterMemberFragment extends Fragment {
                 }
                 Timestamp ts = new Timestamp(System.currentTimeMillis());
                 Date date = new Date(ts.getTime());
-                Member member = new Member(name,aadharid,date);
+                Member member = new Member(name,aadharid,date,contact);
                 new AddMemberTask().execute(member);
             }
         });

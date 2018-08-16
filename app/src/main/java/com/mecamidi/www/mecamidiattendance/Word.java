@@ -30,7 +30,11 @@ public class Word {
     /** Audio resource ID for the word */
     private String status;
 
+    private String name;
     private int id;
+    private String contact;
+    private String desg;
+    private String email;
 
 
     public Word(String start, String end, String stat,int id) {
@@ -39,6 +43,19 @@ public class Word {
         status = stat;
         this.id = id;
     }
+
+    public Word(String mname,String mcontact,String memail,String mdesg) {
+        name = mname;
+        contact =mcontact;
+        email=memail;
+        desg=mdesg;
+    }
+    //show my employees
+    public Word(String mname,String mcontact) {
+        name = mname;
+        contact =mcontact;}
+
+
     /**
      * Get the default translation of the word.
      */
@@ -64,4 +81,18 @@ public class Word {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+    public String getDesg() {
+        return desg;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
